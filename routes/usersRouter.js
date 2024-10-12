@@ -1,30 +1,18 @@
 const { Router } = require('express');
-
-// аналогічно передбачити роутер для /api/tasks
+const { usersController } = require('../controllers');
 
 // /api/users
 const usersRouter = Router();
 
 usersRouter
   .route('/')
-  .post(() => {})
-  .get((req, res) => {
-    res.status(501).send('Not Implemented');
-  });
+  .post(usersController.createUser)
+  .get(usersController.getUsers);
 
 usersRouter
   .route('/:userId')
-  .get(() => {})
-  .patch(() => {})
-  .delete(() => {});
-
-// usersRouter.post('/', () => {});
-// usersRouter.get('/', (req, res) => {
-//   res.status(501).send('Not Implemented 007');
-// });
-
-// usersRouter.get('/:userId', () => {});
-// usersRouter.patch('/:userId', () => {});
-// usersRouter.delete('/:userId', () => {});
+  .get(usersController.getUserById)
+  .patch(usersController.updateUserById)
+  .delete(usersController.deleteUserById);
 
 module.exports = usersRouter;
