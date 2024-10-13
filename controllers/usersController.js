@@ -22,7 +22,7 @@ module.exports.createUser = async (req, res, next) => {
       'updatedAt',
     ]);
 
-    res.status(201).send(prepatedUser);
+    res.status(201).send({ data: prepatedUser });
   } catch (error) {
     next(error);
   }
