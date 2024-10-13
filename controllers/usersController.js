@@ -74,6 +74,52 @@ module.exports.getUserById = async (req, res, next) => {
   }
 };
 
-module.exports.updateUserById = async (req, res, next) => {};
+module.exports.updateUserById = async (req, res, next) => {
+  const {
+    body,
+    params: { userId },
+  } = req;
 
-module.exports.deleteUserById = async (req, res, next) => {};
+  // TODO yup validation mw (422)
+  try {
+    const [, [updatedUser]] = await User.update(body, {
+      where: { id: userId },
+      raw: true,
+      returning: true,
+    });
+
+    if (!updatedUser) {
+      return next(createHttpError(404, 'User Not Found'));
+    }
+
+    const prepatedUser = _.omit(updatedUser, [
+      'passwHash',
+      'createdAt',
+      'updatedAt',
+    ]);
+
+    res.status(200).send({ data: prepatedUser });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.deleteUserById = async (req, res, next) => {
+  const {
+    params: { userId },
+  } = req;
+
+  try {
+    const deletedCount = await User.destroy({
+      where: { id: userId },
+    });
+
+    if (deletedCount === 0) {
+      return next(createHttpError(404, 'User Not Found'));
+    }
+
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
