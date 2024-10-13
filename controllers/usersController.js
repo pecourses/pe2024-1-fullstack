@@ -1,16 +1,12 @@
-const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const { User } = require('./../models');
 const createHttpError = require('http-errors');
+const { User } = require('./../models');
 
 // TODO yup validation mw (422)
 module.exports.createUser = async (req, res, next) => {
   const { body } = req;
-
+  console.log(body);
   try {
-    const SALT_RAUNDS = 10;
-    body.passwHash = await bcrypt.hash(body.passwHash, SALT_RAUNDS);
-
     const createdUser = await User.create(body);
 
     // const prepatedUser = { ...createdUser.get() };
@@ -18,13 +14,13 @@ module.exports.createUser = async (req, res, next) => {
     // delete prepatedUser.createdAt;
     // delete prepatedUser.updatedAt;
 
-    const prepatedUser = _.omit(createdUser.get(), [
+    const preparedUser = _.omit(createdUser.get(), [
       'passwHash',
       'createdAt',
       'updatedAt',
     ]);
 
-    res.status(201).send({ data: prepatedUser });
+    res.status(201).send({ data: preparedUser });
   } catch (error) {
     next(error);
   }
