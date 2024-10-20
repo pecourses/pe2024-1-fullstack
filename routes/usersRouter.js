@@ -1,9 +1,6 @@
 const { Router } = require('express');
-const multer = require('multer');
 const { usersController } = require('../controllers');
-// const { updateOrCreateUserById } = require('../controllers/usersController');
-
-const upload = multer({ dest: 'public/images/' });
+const { upload } = require('../middleware');
 
 // /api/users
 const usersRouter = Router();
@@ -24,7 +21,7 @@ usersRouter.get('/:userId/tasks', usersController.getUsersTasks);
 
 usersRouter.patch(
   '/:userId/images',
-  upload.single('userPhoto'),
+  upload.uploadUserPhoto,
   usersController.updateImage
 );
 
