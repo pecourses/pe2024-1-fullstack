@@ -17,6 +17,8 @@ usersRouter
   .put(usersController.updateOrCreateUserById, usersController.createUser)
   .delete(usersController.deleteUserById);
 
+usersRouter.get('/:userId/tasks', usersController.getUsersTasks);
+
 module.exports = usersRouter;
 // patch - зміна
 // put заміна або створення

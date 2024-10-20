@@ -1,0 +1,9 @@
+### 200 [tasks] 
+GET http://localhost:5000/api/users/6/tasks HTTP/1.1
+
+### 404
+GET http://localhost:5000/api/users/0/tasks HTTP/1.1
+
+### 200 []
+GET http://localhost:5000/api/users/100/tasks HTTP/1.1
+
