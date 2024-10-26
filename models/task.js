@@ -1,4 +1,5 @@
 'use strict';
+const { format, addDays } = require('date-fns');
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
@@ -31,9 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATEONLY,
         validate: {
           // пізніше за вчора
-          isAfter: new Date(
-            new Date().setDate(new Date().getDate() - 1)
-          ).toISOString(),
+          isAfter: format(addDays(new Date(), -1), 'yyyy-MM-dd'),
         },
       },
     },
