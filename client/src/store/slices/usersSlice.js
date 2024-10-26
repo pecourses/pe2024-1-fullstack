@@ -9,6 +9,24 @@ const initialState = {
   error: null,
 };
 
+// users/create
+export const createUserThunk = createAsyncThunk(
+  `${USERS_SLICE_NAME}/post`,
+  async (payload, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await API.createUser(payload);
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue({
+        status: err.response.status,
+        message: err.response.data.errors,
+      }); // => payload
+    }
+  }
+);
+
 // users/get
 export const getUsersThunk = createAsyncThunk(
   `${USERS_SLICE_NAME}/get`,
@@ -46,8 +64,24 @@ const usersSlice = createSlice({
   name: USERS_SLICE_NAME,
   initialState,
   extraReducers: builder => {
+    // create User
+    builder.addCase(createUserThunk.pending, state => {
+      state.isFetching = true;
+      state.error = null;
+    });
+
+    builder.addCase(createUserThunk.fulfilled, (state, { payload }) => {
+      state.isFetching = false;
+      state.users.push(payload);
+    });
+
+    builder.addCase(createUserThunk.rejected, (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
+    });
+
     // get Users
-    builder.addCase(getUsersThunk.pending, (state, action) => {
+    builder.addCase(getUsersThunk.pending, state => {
       state.isFetching = true;
       state.error = null;
     });
@@ -60,7 +94,7 @@ const usersSlice = createSlice({
       state.error = payload;
     });
     // delete User
-    builder.addCase(removeUserThunk.pending, (state, action) => {
+    builder.addCase(removeUserThunk.pending, state => {
       state.isFetching = true;
       state.error = null;
     });
