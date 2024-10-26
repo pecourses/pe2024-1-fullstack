@@ -23,7 +23,7 @@ export const UsersList = ({ users, isFetching, error, getUsers }) => {
               alt={u.nickname}
               className={styles.userImage}
             />
-            {JSON.stringify(u)}
+            <p>{JSON.stringify(u)}</p>
           </li>
         ))}
       </ul>
