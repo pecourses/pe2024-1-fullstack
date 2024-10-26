@@ -1,9 +1,7 @@
 'use strict';
 const { Model, Op } = require('sequelize');
 const bcrypt = require('bcrypt');
-const { GENDERS, ROLES } = require('../constants');
-
-const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
+const { GENDERS, ROLES, SALT_ROUNDS } = require('../constants');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
