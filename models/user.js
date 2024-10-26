@@ -1,6 +1,7 @@
 'use strict';
 const { Model, Op } = require('sequelize');
 const bcrypt = require('bcrypt');
+const { GENDERS, ROLES } = require('../constants');
 
 const SALT_ROUNDS = Number(process.env.SALT_ROUNDS);
 
@@ -62,17 +63,17 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       gender: {
-        type: DataTypes.ENUM('male', 'female', 'other'),
+        type: DataTypes.ENUM(GENDERS),
         validate: {
-          isIn: ['male', 'female', 'other'],
+          isIn: [GENDERS],
         },
       },
       role: {
-        type: DataTypes.ENUM('executor', 'manager'),
+        type: DataTypes.ENUM(ROLES),
         allowNull: false,
-        defaultValue: 'executor',
+        defaultValue: ROLES[0],
         validate: {
-          isIn: ['executor', 'manager'],
+          isIn: [ROLES],
         },
       },
       image: {

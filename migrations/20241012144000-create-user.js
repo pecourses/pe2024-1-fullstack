@@ -1,4 +1,7 @@
 'use strict';
+
+const { GENDERS, ROLES } = require('../constants');
+
 /** @type {import('sequelize-cli').Migration} */
 
 // unique, allowNull, defaultValue, check
@@ -32,12 +35,12 @@ module.exports = {
         type: Sequelize.DATEONLY,
       },
       gender: {
-        type: Sequelize.ENUM('male', 'female', 'other'),
+        type: Sequelize.ENUM(GENDERS),
       },
       role: {
-        type: Sequelize.ENUM('executor', 'manager'),
+        type: Sequelize.ENUM(ROLES),
         allowNull: false,
-        defaultValue: 'executor',
+        defaultValue: ROLES[0],
       },
       image: {
         type: Sequelize.STRING,
