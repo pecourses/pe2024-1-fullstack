@@ -1,15 +1,14 @@
-const path = require('node:path');
 const express = require('express');
 const { errorHandlers } = require('./middleware');
 const router = require('./routes');
+const { STATIC_PATH } = require('./constants');
 
 const app = express();
 
 app.use(express.json());
 
-// http://localhost:5000/images/user.png
-// TODO move to constants.js
-app.use(express.static(path.resolve(process.env.STATIC_FOLDER)));
+// http://localhost:5000/images/filename
+app.use(express.static(STATIC_PATH));
 
 app.use('/api', router);
 

@@ -1,6 +1,13 @@
 const path = require('node:path');
+const fs = require('node:fs');
 const multer = require('multer');
 const createHttpError = require('http-errors');
+const { STATIC_IMAGES_PATH } = require('../constants');
+
+// якщо "public/images" не існує, то створити
+if (!fs.existsSync(STATIC_IMAGES_PATH)) {
+  fs.mkdirSync(STATIC_IMAGES_PATH, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

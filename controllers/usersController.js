@@ -1,7 +1,8 @@
+const path = require('node:path');
 const _ = require('lodash');
 const createHttpError = require('http-errors');
 const { User } = require('./../models');
-const { where } = require('sequelize');
+const { STATIC_IMAGES_FOLDER } = require('../constants');
 
 // TODO yup validation mw (422)
 module.exports.createUser = async (req, res, next) => {
@@ -198,7 +199,7 @@ module.exports.updateImage = async (req, res, next) => {
     }
 
     const [, [updatedUser]] = await User.update(
-      { image: 'images/' + file.filename },
+      { image: path.join(STATIC_IMAGES_FOLDER, file.filename) }, // "images/filename"
       { where: { id: userId }, returning: true, raw: true }
     );
 
